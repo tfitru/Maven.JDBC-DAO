@@ -13,6 +13,6 @@ interface DAO<T> {
 
     public T create(T dto);
 
-    public void delete(int id);
+    public boolean delete(int id);
 
 }

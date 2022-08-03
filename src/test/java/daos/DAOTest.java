@@ -1,5 +1,6 @@
 package daos;
 
+import com.mysql.jdbc.Driver;
 import com.sun.xml.internal.fastinfoset.tools.TransformInputOutput;
 import db_tables.DAOReal;
 import junit.framework.Assert;
@@ -9,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,66 +21,50 @@ import static org.junit.Assert.assertEquals;
 
 public class DAOTest {
 
-//    @Test
-//    public void updateTest() {
-//        Scanner console = new Scanner(System.in);
-//        List<DAOReal> newArray = new ArrayList<DAOReal>();
-//        DAOReal daoReal = new DAOReal("fitru", "123 burboun street", "banana", "1256", "Mexico", 23);
-//        newArray.add(daoReal);
-//
-//        String name = console.next("Enter name");
-//        String address = console.next("Enter Address");
-//        String city = console.next("Enter city");
-//        String zipCode = console.next("Enter ZipCode");
-//        String country = console.next("Eneter Country");
-//        System.out.println("Enter a number");
-//        Integer id = console.nextInt();
-//        newArray.get(0).setStudentName(name);
-//        newArray.get(0).setAddress(address);
-//        newArray.get(0).setCity(city);
-//        newArray.get(0).setZipCode(zipCode);
-//        newArray.get(0).setCountry(country);
-//        newArray.get(0).setId(id);
-//
-//        Assert.assertEquals(newArray.get(0).getStudentName(), "frank");
-//        Assert.assertEquals(newArray.get(0).getAddress(), "frank");
-//        Assert.assertEquals(newArray.get(0).getCity(), "frank");
-//        Assert.assertEquals(newArray.get(0).getZipCode(), "frank");
-//        Assert.assertEquals(newArray.get(0).getCountry(), "frank");
-//        Assert.assertEquals(newArray.get(0), 5);
-//    }
+    @Test
+    public void updateTest() {
+        DAOReal daoReal = new DAOReal();
+        List<DAOReal> x = daoReal.findAll();
+        x.get(0).update(x.get(0));
 
-//
-//    public DAOReal create(DAOReal dto) {
-//        for(int i = 0; i<newArray.size(); i++){
-//            if(newArray.get(i).equals(dto)){
-//                update(dto);
-//            } else {
-//                String name = console.next("Enter name");
-//                String address = console.next("Enter Address");
-//                String city = console.next("Enter city");
-//                String zipCode = console.next("Enter ZipCode");
-//                String country = console.next("Eneter Country");
-//                return new DAOReal(name, address, city, zipCode, country);
-//            }
-//        }
-//        return null;
-//    }
+        int sizeActual = daoReal.size();
+
+        Assert.assertEquals(x.get(0).getCity(), "F");
+    }
+
+    @Test
+    public void findAllTest() {
+        DAOReal daoReal = new DAOReal();
+        List<DAOReal> expectedList = new ArrayList<DAOReal>();
+        expectedList.addAll(daoReal.findAll());
+        int expectedSize = daoReal.size();
+
+        int actualList = expectedList.size();
+
+        Assert.assertEquals(actualList, expectedSize);
+    }
+
+
+
+    @Test
+    public void createTest() {
+        DAOReal daoReal = new DAOReal("Jimmy Neutron", "123 Burboun street","Kansas City","12355","US",3);
+        DAOReal daoReal1 = new DAOReal();
+        daoReal1.create(daoReal);
+
+        Assert.assertEquals(daoReal.getZipCode(), daoReal1.findAll().get(8).getZipCode());
+    }
+
 
     @Test
     public void deleteTest(){
-        DAOReal daoReal = new DAOReal("fitru", "123 burboun street", "banana", "1256", "Mexico", 23);
-        daoReal.add(daoReal);
+        DAOReal daoReal1 = new DAOReal();
+        daoReal1.findAll();
 
+        daoReal1.delete(1);
+        int sizeActual = daoReal1.size();
 
-
-        daoReal.delete(daoReal.getId());
-
-        int actual = daoReal.size();
-
-        Assert.assertEquals(0, actual);
-
-
+        Assert.assertEquals(5, sizeActual);
     }
 
     @Test
@@ -163,7 +151,6 @@ public class DAOTest {
 
         Assert.assertEquals(expectedString, actualString);
     }
-
 
 
 
