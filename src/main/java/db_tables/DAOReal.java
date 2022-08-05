@@ -150,7 +150,12 @@ public class DAOReal implements DAO<DAOReal> {
                 newArray.add(daoReal);
             }
             for(int i = 0; i< newArray.size(); i++){
-                System.out.println(newArray.get(i).getStudentName() + " " + newArray.get(i).getAddress() + " " + newArray.get(i).getCity() + " " + newArray.get(i).getZipCode() + " " + newArray.get(i).getCountry() + " " + newArray.get(i).getId());
+                System.out.println(newArray.get(i).getStudentName() +
+                        " " + newArray.get(i).getAddress() +
+                        " " + newArray.get(i).getCity() +
+                        " " + newArray.get(i).getZipCode() +
+                        " " + newArray.get(i).getCountry() +
+                        " " + newArray.get(i).getId());
             }
             return newArray;
         } catch (SQLException ex){
@@ -175,7 +180,8 @@ public class DAOReal implements DAO<DAOReal> {
     public DAOReal update(DAOReal dto) {
         Connection connection = DAOReal.getConnection();
         try{
-            PreparedStatement ps = connection.prepareStatement("UPDATE Students SET StudentName=?, Address=?, City=?, PostalCode=?, country=? Where StudentID=?");
+            PreparedStatement ps = connection.prepareStatement("UPDATE Students " +
+                    "SET StudentName=?, Address=?, City=?, PostalCode=?, country=? Where StudentID=?");
             ps.setString(1, dto.getStudentName());
             ps.setString(2, dto.getAddress());
             ps.setString(3,dto.getCity());
@@ -183,7 +189,7 @@ public class DAOReal implements DAO<DAOReal> {
             ps.setString(5, dto.getCountry());
             ps.setInt(6, dto.getId());
             int i = ps.executeUpdate();
-            if(i==5){
+            if(i==1){
                 System.out.print("Query OK");
                 return dto;
             }

@@ -1,35 +1,29 @@
 package daos;
 
-import com.mysql.jdbc.Driver;
-import com.sun.xml.internal.fastinfoset.tools.TransformInputOutput;
+
 import db_tables.DAOReal;
 import junit.framework.Assert;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import static org.junit.Assert.assertEquals;
 
 public class DAOTest {
 
     @Test
     public void updateTest() {
+        DAOReal daoRealF = new DAOReal("Frank", "123 Burn street","Kansas City","12355","MA",5);
+
         DAOReal daoReal = new DAOReal();
         List<DAOReal> x = daoReal.findAll();
-        x.get(0).update(x.get(0));
+        daoReal.update(daoRealF);
 
         int sizeActual = daoReal.size();
 
-        Assert.assertEquals(x.get(0).getCity(), "F");
+        Assert.assertEquals(x.get(0).getCountry(), "MA");
     }
 
     @Test
@@ -48,11 +42,17 @@ public class DAOTest {
 
     @Test
     public void createTest() {
-        DAOReal daoReal = new DAOReal("Jimmy Neutron", "123 Burboun street","Kansas City","12355","US",3);
+        DAOReal daoReal = new DAOReal("Robert Johnson", "12 Newbron county","New City","KITE","CAR",20);
         DAOReal daoReal1 = new DAOReal();
+        daoReal.findAll();
+        Integer expectedsize = daoReal.size();
         daoReal1.create(daoReal);
+        daoReal1.findAll();
+        Integer sizeActual = daoReal1.size() - 1;
 
-        Assert.assertEquals(daoReal.getZipCode(), daoReal1.findAll().get(8).getZipCode());
+
+
+       Assert.assertEquals(expectedsize, sizeActual);
     }
 
 
@@ -61,10 +61,10 @@ public class DAOTest {
         DAOReal daoReal1 = new DAOReal();
         daoReal1.findAll();
 
-        daoReal1.delete(1);
+        daoReal1.delete(3);
         int sizeActual = daoReal1.size();
 
-        Assert.assertEquals(5, sizeActual);
+        Assert.assertEquals(1, sizeActual);
     }
 
     @Test
